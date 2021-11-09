@@ -61,7 +61,9 @@ function BookAppointment() {
           'Success!',
           `Appointment Confirmation Number: ${res.data.id}`,
           'success'
-        );
+        ).then(() => {
+          window.location.href = '/';
+        });
       });
     } else {
       Swal.fire('Error', 'Please select a date and time', 'error');

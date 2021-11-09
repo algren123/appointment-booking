@@ -5,12 +5,14 @@ import { table, minifyRecords } from './api/utils/Airtable';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
+import { reverseDate } from './api/utils/helperFunctions';
 
 function AdminPage({ initialBookings }) {
   const router = useRouter();
   const [statusFilter, setStatusFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
   const [bookingNumber, setBookingNumber] = useState(0);
-  const [bookings, setBookings] = useState([]);
+  let [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     if (initialBookings.length) {
@@ -18,6 +20,7 @@ function AdminPage({ initialBookings }) {
       setBookingNumber(bookings.length);
     }
   });
+
   // Refreshes the bookings for delete/update events (because of ServerSideProps)
   const refreshData = () => {
     router.replace(router.asPath);
@@ -38,9 +41,16 @@ function AdminPage({ initialBookings }) {
   }
 
   // Renders the bookings in chronological order
-  function bookingList(filter) {
-    if (filter) {
-      bookings = bookings.filter((booking) => booking.fields.status === filter);
+  function bookingList(statusFilter, dateFilter) {
+    if (statusFilter) {
+      bookings = bookings.filter(
+        (booking) => booking.fields.status === statusFilter
+      );
+    }
+    if (dateFilter) {
+      bookings = bookings.filter(
+        (booking) => reverseDate(booking.fields.date) === dateFilter
+      );
     }
     bookings = bookings.sort((a, b) => {
       return (
@@ -73,6 +83,16 @@ function AdminPage({ initialBookings }) {
         Admin Page
       </h1>
       <div className="flex flex-col m-5">
+        <input
+          className="mx-auto mb-3 p-2 font-bold bg-gray-200 rounded-md"
+          type="date"
+          name="filterDate"
+          id="filterDate"
+          value={dateFilter}
+          onChange={(e) => {
+            setDateFilter(e.target.value);
+          }}
+        />
         <select
           className="mx-auto mb-3 p-2 font-bold bg-gray-200 rounded-md"
           value={statusFilter}
@@ -86,7 +106,10 @@ function AdminPage({ initialBookings }) {
         </select>
         <button
           className="bg-purple-500 mx-auto px-8 py-2 hover:text-white font-bold mb-3 rounded-md"
-          onClick={() => setStatusFilter('')}
+          onClick={() => {
+            setDateFilter('');
+            setStatusFilter('');
+          }}
         >
           Reset Filter
         </button>
@@ -95,7 +118,7 @@ function AdminPage({ initialBookings }) {
         <h2 className="text-center text-2xl font-bold mb-5">
           You have <span className="text-purple-500">{bookingNumber}</span>{' '}
           {statusFilter === 'PENDING'
-            ? 'Pending Bookingsg'
+            ? 'Pending Bookings'
             : statusFilter === 'CONFIRMED'
             ? 'Confirmed Bookings'
             : statusFilter === 'CANCELLED'
@@ -109,7 +132,7 @@ function AdminPage({ initialBookings }) {
       )}
 
       <div className="grid gap-5 grid-cols-1 md:grid-cols-3 2xl:grid-cols-6 mx-5">
-        {bookingList(statusFilter)}
+        {bookingList(statusFilter, dateFilter)}
       </div>
     </div>
   );

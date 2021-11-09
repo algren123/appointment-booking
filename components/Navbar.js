@@ -10,37 +10,30 @@ function Navbar() {
         <div className="flex justify-between">
           <div className="flex space-x-7">
             <div>
-              <a href="#" className="flex items-center py-4 px-2">
-                <span className="font-semibold text-gray-500 text-lg">
-                  Company Name
-                </span>
-              </a>
+              <Link href="/">
+                <a className="flex items-center py-4 px-2">
+                  <span className="font-semibold text-gray-500 text-lg">
+                    Company Name
+                  </span>
+                </a>
+              </Link>
             </div>
             <div className="hidden md:flex items-center space-x-1">
-              <a
-                href=""
-                className="py-4 px-2 text-purple-500 border-b-4 border-purple-500 font-semibold "
-              >
-                Home
-              </a>
-              <a
-                href=""
-                className="py-4 px-2 text-gray-500 font-semibold hover:text-purple-500 transition duration-300"
-              >
-                Services
-              </a>
-              <a
-                href=""
-                className="py-4 px-2 text-gray-500 font-semibold hover:text-purple-500 transition duration-300"
-              >
-                About
-              </a>
-              <a
-                href=""
-                className="py-4 px-2 text-gray-500 font-semibold hover:text-purple-500 transition duration-300"
-              >
-                Contact Us
-              </a>
+              <Link href="/">
+                <a className="py-4 px-2 text-gray-500 font-semibold hover:text-purple-500 transition duration-300">
+                  Home
+                </a>
+              </Link>
+              <Link href="/appointment">
+                <a className="py-4 px-2 text-gray-500 font-semibold hover:text-purple-500 transition duration-300">
+                  Book
+                </a>
+              </Link>
+              <Link href="/admin">
+                <a className="py-4 px-2 text-gray-500 font-semibold hover:text-purple-500 transition duration-300">
+                  Admin
+                </a>
+              </Link>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-3 ">
