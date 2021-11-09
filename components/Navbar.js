@@ -44,30 +44,27 @@ function Navbar() {
           </div>
           {!user ? (
             <div className="hidden md:flex items-center space-x-3 ">
-              <a
-                href="/api/auth/login"
-                className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-purple-500 hover:text-white transition duration-300"
-              >
-                Log In
-              </a>
-              <a
-                href="/api/auth/login"
-                className="py-2 px-2 font-medium text-white bg-purple-500 rounded hover:bg-purple-400 transition duration-300"
-              >
-                Sign Up
-              </a>
+              <Link href="/api/auth/login">
+                <a className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-purple-500 hover:text-white transition duration-300">
+                  Log In
+                </a>
+              </Link>
+              <Link href="/api/auth/login">
+                <a className="py-2 px-2 font-medium text-white bg-purple-500 rounded hover:bg-purple-400 transition duration-300">
+                  Sign Up
+                </a>
+              </Link>
             </div>
           ) : (
             <div className="hidden md:flex items-center space-x-3 ">
               <span className="text-gray-500 font-semibold">
                 Welcome {user.given_name}!
               </span>
-              <a
-                href="/api/auth/logout"
-                className="py-2 px-2 font-medium text-white bg-purple-500 rounded hover:bg-purple-400 transition duration-300"
-              >
-                Logout
-              </a>
+              <Link href="/api/auth/logout">
+                <a className="py-2 px-2 font-medium text-white bg-purple-500 rounded hover:bg-purple-400 transition duration-300">
+                  Logout
+                </a>
+              </Link>
             </div>
           )}
 
