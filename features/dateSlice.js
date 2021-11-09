@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   date: '',
   time: '',
+  name: '',
 };
 
 export const dateSlice = createSlice({
@@ -14,11 +15,16 @@ export const dateSlice = createSlice({
       state.date = date;
     },
     updateTime: (state, action) => {
+      console.log(action.payload);
       state.time = action.payload;
+    },
+    updateName: (state, action) => {
+      console.log(action.payload);
+      state.name = action.payload;
     },
   },
 });
 
-export const { updateDate, updateTime } = dateSlice.actions;
+export const { updateDate, updateTime, updateName } = dateSlice.actions;
 
 export default dateSlice.reducer;

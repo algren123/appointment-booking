@@ -77,7 +77,7 @@ function AdminPage({ initialBookings }) {
   }
 
   return (
-    <div>
+    <div className="mb-20">
       <Navbar />
       <h1 className="text-center text-3xl font-bold m-10 text-purple-500">
         Admin Page
@@ -99,13 +99,21 @@ function AdminPage({ initialBookings }) {
           onChange={(e) => setStatusFilter(e.target.value)}
         >
           <option value="">Filter by status</option>
-          <option value="PENDING">PENDING</option>
-          <option value="CONFIRMED">CONFIRMED</option>
-          <option value="CANCELLED">CANCELLED</option>
-          <option value="COMPLETED">COMPLETED</option>
+          <option className="font-bold" value="PENDING">
+            PENDING
+          </option>
+          <option className="font-bold" value="CONFIRMED">
+            CONFIRMED
+          </option>
+          <option className="font-bold" value="CANCELLED">
+            CANCELLED
+          </option>
+          <option className="font-bold" value="COMPLETED">
+            COMPLETED
+          </option>
         </select>
         <button
-          className="bg-purple-500 mx-auto px-8 py-2 hover:text-white font-bold mb-3 rounded-md"
+          className="bg-purple-500 mx-auto px-8 py-2 text-white hover:bg-purple-400 font-bold mb-3 rounded-md"
           onClick={() => {
             setDateFilter('');
             setStatusFilter('');
@@ -131,7 +139,7 @@ function AdminPage({ initialBookings }) {
         ''
       )}
 
-      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 2xl:grid-cols-6 mx-5">
+      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 2xl:grid-cols-5 mx-5">
         {bookingList(statusFilter, dateFilter)}
       </div>
     </div>

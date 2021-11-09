@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^1.6.1",
     "@fullcalendar/core": "^5.10.1",
     "@fullcalendar/daygrid": "^5.10.1",
     "@fullcalendar/interaction": "^5.10.1",
@@ -18,6 +19,8 @@
     "airtable": "^0.11.1",
     "axios": "^0.24.0",
     "babel-plugin-transform-require-ignore": "^0.1.1",
+    "cors": "^2.8.5",
+    "cors-anywhere": "^0.4.4",
     "mini-css-extract-plugin": "^2.4.4",
     "moment": "^2.29.1",
     "next": "12.0.3",

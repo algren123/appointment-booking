@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { updateName } from '../features/dateSlice';
 import { reverseDate, addHour } from '../pages/api/utils/helperFunctions';
 
 export default function AdminBooking({
@@ -7,6 +8,7 @@ export default function AdminBooking({
   updateBooking,
 }) {
   const [modal, setModal] = useState(false);
+  const [updatedName, setUpdatedName] = useState(booking.fields.name);
   const [updatedDate, setUpdatedDate] = useState(booking.fields.date);
   const [updatedTime, setUpdatedTime] = useState(booking.fields.time);
   const [updatedStatus, setUpdatedStatus] = useState(booking.fields.status);
@@ -25,19 +27,20 @@ export default function AdminBooking({
           : '') + ' border-8 rounded-md text-center text-xl font-semibold p-5'
       }
     >
+      <p>Name: {booking.fields.name}</p>
       <p>Date: {booking.fields.date}</p>
       <p>Time: {booking.fields.time}</p>
       <p>Status: {booking.fields.status}</p>
       <p>ID: {booking.id}</p>
       <button
         onClick={() => setModal(true)}
-        className="m-2 mt-6 p-2 rounded bg-purple-500  font-bold hover:text-white"
+        className="m-2 mt-6 p-2 rounded bg-purple-500 text-white font-bold hover:bg-purple-400"
       >
         Update
       </button>
       <button
         onClick={() => deleteBooking(booking.id)}
-        className="m-2 mt-6 p-2 rounded bg-red-500  font-bold hover:text-white"
+        className="m-2 mt-6 p-2 rounded bg-red-500 text-white font-bold hover:bg-red-400"
       >
         Delete
       </button>
@@ -49,6 +52,17 @@ export default function AdminBooking({
       >
         <div className="bg-white m-auto mt-32 p-12 w-96 rounded-md flex flex-col">
           <span className="mb-5">Booking Id: {booking.id}</span>
+          <span>
+            Name:{' '}
+            <input
+              type="text"
+              name="updatedName"
+              id="updatedName"
+              className="my-3 w-32 bg-gray-300 rounded-md mx-2 p-2"
+              value={updatedName}
+              onChange={(e) => setUpdatedName(e.target.value)}
+            />
+          </span>
           <span>
             Date:{' '}
             <input
@@ -93,11 +107,12 @@ export default function AdminBooking({
             </select>
           </span>
           <button
-            className="w-48 m-auto mt-6 p-2 rounded bg-purple-500  font-bold hover:text-white"
+            className="w-48 m-auto mt-6 p-2 rounded bg-purple-500 text-white font-bold hover:bg-purple-400"
             onClick={() => {
               updateBooking(booking.id, {
                 date: updatedDate,
                 time: updatedTime,
+                name: updatedName,
                 status: updatedStatus,
               });
               setModal(false);
@@ -106,7 +121,7 @@ export default function AdminBooking({
             Update
           </button>
           <button
-            className="w-48 m-auto mt-6 p-2 rounded bg-red-500  font-bold hover:text-white"
+            className="w-48 m-auto mt-6 p-2 rounded bg-red-500 text-white font-bold hover:bg-red-400"
             onClick={() => setModal(false)}
           >
             Close

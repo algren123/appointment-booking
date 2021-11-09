@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateDate, updateTime } from '../features/dateSlice';
+import { updateDate, updateTime, updateName } from '../features/dateSlice';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
+import { useUser } from '@auth0/nextjs-auth0';
 
 function BookAppointment() {
-  const { date, time } = useSelector((state) => state.date);
+  const { date, time, name } = useSelector((state) => state.date);
   const dispatch = useDispatch();
+  const { user } = useUser();
+
+  useEffect(() => {
+    // If the user is logged in, autofill the name input
+    if (user) {
+      dispatch(updateName(user.given_name));
+    }
+  }, []);
 
   // FullCalendar custom settings
   const header = {
@@ -45,6 +54,7 @@ function BookAppointment() {
 
   function handleSelect(params) {
     dispatch(updateDate(params.startStr));
+    dispatch(updateTime(timeslots[0]));
   }
 
   // Sets up the params and does a POST request to add to Airtable DB
@@ -52,10 +62,11 @@ function BookAppointment() {
     const params = {
       date,
       time,
+      name,
       status: 'PENDING',
     };
 
-    if (date && time) {
+    if (date && time && name) {
       axios.post('/api/createBooking', params).then((res) => {
         Swal.fire(
           'Success!',
@@ -66,12 +77,12 @@ function BookAppointment() {
         });
       });
     } else {
-      Swal.fire('Error', 'Please select a date and time', 'error');
+      Swal.fire('Error', 'Please fill in all fields', 'error');
     }
   }
 
   return (
-    <div className="flex flex-col max-h-screen mb-16">
+    <div className="flex flex-col min-h-screen mb-16">
       <Navbar />
       <h1 className="mx-auto mt-10 mb-3 font-bold text-3xl text-purple-500">
         Book an appointment
@@ -103,8 +114,8 @@ function BookAppointment() {
         <select
           name="timeSelect"
           id="timeSelect"
-          value="Time"
-          className="mx-auto my-3 w-1/2 text-center py-2 bg-gray-200 rounded"
+          value={time}
+          className="mx-auto my-3 w-auto text-center py-2 bg-gray-200 rounded"
           onChange={(e) => dispatch(updateTime(e.target.value))}
         >
           <option disabled>Time</option>
@@ -115,6 +126,19 @@ function BookAppointment() {
           ))}
         </select>
       </label>
+      <div className="mx-5 mt-5 px-5 md:px-80 flex flex-col">
+        <h2 className="text-center text-2xl font-semibold mb-3 text-purple-500">
+          3. Enter booking name
+        </h2>
+        <input
+          className="mx-auto my-3 w-auto text-center py-2 text-purple-500 font-medium bg-gray-200 rounded"
+          type="text"
+          name="nameSelect"
+          id="nameSelect"
+          defaultValue={name}
+          onChange={(e) => dispatch(updateName(e.target.value))}
+        />
+      </div>
       <h2 className="text-center text-2xl font-bold my-5 text-purple-500 flex flex-col">
         {date && time
           ? `Appointment on ${new Date(

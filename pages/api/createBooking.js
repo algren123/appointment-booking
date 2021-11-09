@@ -1,13 +1,14 @@
 import { table, minifyRecords } from './utils/Airtable';
 
 export default async (req, res) => {
-  const { date, time, status } = req.body;
+  const { date, time, name, status } = req.body;
   try {
     const createdRecords = await table.create([
       {
         fields: {
           date,
           time,
+          name,
           status,
         },
       },
