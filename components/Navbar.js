@@ -14,11 +14,13 @@ function Navbar() {
         <div className="flex justify-between">
           <div className="flex space-x-7">
             <div>
-              <a href="/" className="flex items-center py-4 px-2">
-                <span className="font-semibold text-gray-500 text-lg">
-                  Company Name
-                </span>
-              </a>
+              <Link href="/">
+                <a className="flex items-center py-4 px-2">
+                  <span className="font-semibold text-gray-500 text-lg">
+                    Company Name
+                  </span>
+                </a>
+              </Link>
             </div>
             <div className="hidden md:flex items-center space-x-1">
               <Link href="/">
