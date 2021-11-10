@@ -14,13 +14,11 @@ function Navbar() {
         <div className="flex justify-between">
           <div className="flex space-x-7">
             <div>
-              <Link href="/">
-                <a className="flex items-center py-4 px-2">
-                  <span className="font-semibold text-gray-500 text-lg">
-                    Company Name
-                  </span>
-                </a>
-              </Link>
+              <a href="/" className="flex items-center py-4 px-2">
+                <span className="font-semibold text-gray-500 text-lg">
+                  Company Name
+                </span>
+              </a>
             </div>
             <div className="hidden md:flex items-center space-x-1">
               <Link href="/">
@@ -46,27 +44,30 @@ function Navbar() {
           </div>
           {!user ? (
             <div className="hidden md:flex items-center space-x-3 ">
-              <Link href="/api/auth/login">
-                <a className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-purple-500 hover:text-white transition duration-300">
-                  Log In
-                </a>
-              </Link>
-              <Link href="/api/auth/login">
-                <a className="py-2 px-2 font-medium text-white bg-purple-500 rounded hover:bg-purple-400 transition duration-300">
-                  Sign Up
-                </a>
-              </Link>
+              <a
+                href="/api/auth/login"
+                className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-purple-500 hover:text-white transition duration-300"
+              >
+                Log In
+              </a>
+              <a
+                href="/api/auth/login"
+                className="py-2 px-2 font-medium text-white bg-purple-500 rounded hover:bg-purple-400 transition duration-300"
+              >
+                Sign Up
+              </a>
             </div>
           ) : (
             <div className="hidden md:flex items-center space-x-3 ">
               <span className="text-gray-500 font-semibold">
-                Welcome {user.given_name}!
+                Welcome {user.given_name || user.name}!
               </span>
-              <Link href="/api/auth/logout">
-                <a className="py-2 px-2 font-medium text-white bg-purple-500 rounded hover:bg-purple-400 transition duration-300">
-                  Logout
-                </a>
-              </Link>
+              <a
+                href="/api/auth/logout"
+                className="py-2 px-2 font-medium text-white bg-purple-500 rounded hover:bg-purple-400 transition duration-300"
+              >
+                Logout
+              </a>
             </div>
           )}
 

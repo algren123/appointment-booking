@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { updateName } from '../features/dateSlice';
+import Swal from 'sweetalert2';
+import { updateName, updateTime } from '../features/dateSlice';
 import { reverseDate, addHour } from '../pages/api/utils/helperFunctions';
 
 export default function AdminBooking({
@@ -34,13 +35,13 @@ export default function AdminBooking({
       <p>ID: {booking.id}</p>
       <button
         onClick={() => setModal(true)}
-        className="m-2 mt-6 p-2 rounded bg-purple-500 text-white font-bold hover:bg-purple-400"
+        className="m-2 mt-6 py-2 px-4 rounded bg-purple-500 text-white font-bold hover:bg-purple-400"
       >
         Update
       </button>
       <button
         onClick={() => deleteBooking(booking.id)}
-        className="m-2 mt-6 p-2 rounded bg-red-500 text-white font-bold hover:bg-red-400"
+        className="m-2 mt-6 py-2 px-5 rounded bg-red-500 text-white font-bold hover:bg-red-400"
       >
         Delete
       </button>
@@ -109,13 +110,17 @@ export default function AdminBooking({
           <button
             className="w-48 m-auto mt-6 p-2 rounded bg-purple-500 text-white font-bold hover:bg-purple-400"
             onClick={() => {
-              updateBooking(booking.id, {
-                date: updatedDate,
-                time: updatedTime,
-                name: updatedName,
-                status: updatedStatus,
-              });
-              setModal(false);
+              if (updateTime !== '' && updatedDate !== '' && updatedName) {
+                updateBooking(booking.id, {
+                  date: updatedDate,
+                  time: updatedTime,
+                  name: updatedName,
+                  status: updatedStatus,
+                });
+                setModal(false);
+              } else {
+                Swal.fire('Error', 'Please fill in all fields', 'error');
+              }
             }}
           >
             Update

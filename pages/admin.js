@@ -6,9 +6,11 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 import { reverseDate } from './api/utils/helperFunctions';
+import { useUser } from '@auth0/nextjs-auth0';
 
 function AdminPage({ initialBookings }) {
   const router = useRouter();
+  const { user } = useUser();
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const [bookingNumber, setBookingNumber] = useState(0);
@@ -76,74 +78,92 @@ function AdminPage({ initialBookings }) {
     }
   }
 
-  return (
-    <div className="mb-20">
-      <Navbar />
-      <h1 className="text-center text-3xl font-bold m-10 text-purple-500">
-        Admin Page
-      </h1>
-      <div className="flex flex-col m-5">
-        <input
-          className="mx-auto mb-3 p-2 font-bold bg-gray-200 rounded-md"
-          type="date"
-          name="filterDate"
-          id="filterDate"
-          value={dateFilter}
-          onChange={(e) => {
-            setDateFilter(e.target.value);
-          }}
-        />
-        <select
-          className="mx-auto mb-3 p-2 font-bold bg-gray-200 rounded-md"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="">Filter by status</option>
-          <option className="font-bold" value="PENDING">
-            PENDING
-          </option>
-          <option className="font-bold" value="CONFIRMED">
-            CONFIRMED
-          </option>
-          <option className="font-bold" value="CANCELLED">
-            CANCELLED
-          </option>
-          <option className="font-bold" value="COMPLETED">
-            COMPLETED
-          </option>
-        </select>
-        <button
-          className="bg-purple-500 mx-auto px-8 py-2 text-white hover:bg-purple-400 font-bold mb-3 rounded-md"
-          onClick={() => {
-            setDateFilter('');
-            setStatusFilter('');
-          }}
-        >
-          Reset Filter
-        </button>
+  if (!user) {
+    return (
+      <div className="h-screen flex flex-col">
+        <div className="m-auto text-center">
+          <h1 className="text-4xl font-extrabold text-purple-500">
+            You don&apos;t have access to this page
+          </h1>
+          <button
+            onClick={() => (window.location.href = '/')}
+            className="p-3 my-3 text-white bg-purple-500 rounded-md font-bold hover:bg-purple-400"
+          >
+            Go Back
+          </button>
+        </div>
       </div>
-      {bookingNumber !== 0 ? (
-        <h2 className="text-center text-2xl font-bold mb-5">
-          You have <span className="text-purple-500">{bookingNumber}</span>{' '}
-          {statusFilter === 'PENDING'
-            ? 'Pending Bookings'
-            : statusFilter === 'CONFIRMED'
-            ? 'Confirmed Bookings'
-            : statusFilter === 'CANCELLED'
-            ? 'Cancelled Bookings'
-            : statusFilter === 'COMPLETED'
-            ? 'Completed Bookings'
-            : 'Bookings'}
-        </h2>
-      ) : (
-        ''
-      )}
+    );
+  } else {
+    return (
+      <div className="mb-20">
+        <Navbar />
+        <h1 className="text-center text-3xl font-bold m-10 text-purple-500">
+          Admin Page
+        </h1>
+        <div className="flex flex-col m-5">
+          <input
+            className="mx-auto mb-3 p-2 font-bold bg-gray-200 rounded-md"
+            type="date"
+            name="filterDate"
+            id="filterDate"
+            value={dateFilter}
+            onChange={(e) => {
+              setDateFilter(e.target.value);
+            }}
+          />
+          <select
+            className="mx-auto mb-3 p-2 font-bold bg-gray-200 rounded-md"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">Filter by status</option>
+            <option className="font-bold" value="PENDING">
+              PENDING
+            </option>
+            <option className="font-bold" value="CONFIRMED">
+              CONFIRMED
+            </option>
+            <option className="font-bold" value="CANCELLED">
+              CANCELLED
+            </option>
+            <option className="font-bold" value="COMPLETED">
+              COMPLETED
+            </option>
+          </select>
+          <button
+            className="bg-purple-500 mx-auto px-8 py-2 text-white hover:bg-purple-400 font-bold mb-3 rounded-md"
+            onClick={() => {
+              setDateFilter('');
+              setStatusFilter('');
+            }}
+          >
+            Reset Filter
+          </button>
+        </div>
+        {bookingNumber !== 0 ? (
+          <h2 className="text-center text-2xl font-bold mb-5">
+            You have <span className="text-purple-500">{bookingNumber}</span>{' '}
+            {statusFilter === 'PENDING'
+              ? 'Pending Bookings'
+              : statusFilter === 'CONFIRMED'
+              ? 'Confirmed Bookings'
+              : statusFilter === 'CANCELLED'
+              ? 'Cancelled Bookings'
+              : statusFilter === 'COMPLETED'
+              ? 'Completed Bookings'
+              : 'Bookings'}
+          </h2>
+        ) : (
+          ''
+        )}
 
-      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 2xl:grid-cols-5 mx-5">
-        {bookingList(statusFilter, dateFilter)}
+        <div className="grid gap-5 grid-cols-1 md:grid-cols-3 2xl:grid-cols-5 mx-5">
+          {bookingList(statusFilter, dateFilter)}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default AdminPage;
