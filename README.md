@@ -2,6 +2,8 @@
 
 I wanted to get more familiar with Redux and state management in general, and an appointment booking dashboard would've been a great project to create to establish those skills. It features a full CRUD operation and a minimal but playful styling.
 
+[LIVE LINK](https://algren-booking.vercel.app/)
+
 ### Built With
 
 * [Next.js](https://nextjs.org/)
